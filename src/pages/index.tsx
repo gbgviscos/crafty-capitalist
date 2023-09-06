@@ -1,124 +1,229 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import React, { useState, useEffect } from 'react';
+import ResourceGatherer from '@/components/Resources/ResourceGather';
+import ItemProduction from '../components/ItemProduction'
 
-const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+import Dashboard from '../components/Dashboard';
+import Navbar from '../components/Navbar'
+import SideNav from '../components/SideNav'
+import ResourceGathering from '@/components/ResourceGathering';
+import FactoryManagement from '@/components/FactoryManagement';
+import Marketplace from '@/components/Marketplace';
+import Products from '@/components/Products';
+import NPCBuyers from '@/components/NPCBuyers';
+import { items } from '@/utils/items';
+import { calculatePrice } from '@/utils/pricing';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useFactories } from '@/contexts/FactoriesContext';
+
+const HomePage: React.FC = () => {
+  const [npcListings, setNpcListings] = useState({});
+  const [playerListings, setPlayerListings] = useState<{ [key: string]: number }>({});
+  const [currency, setCurrency] = useState(100);  // Starting with 100 as an example
+  const [activeTab, setActiveTab] = React.useState('dashboard');
+  const { factories, setFactories } = useFactories();
+  const { resources, setResources } = useFactories();
+
+
+
+
+
+  useEffect(() => {
+    const npcAction = setTimeout(() => {
+      // Here's a simple NPC action that occasionally adds items for sale.
+      const productNames = Object.keys(items);
+      const randomProduct = productNames[Math.floor(Math.random() * productNames.length)];
+
+      setNpcListings(prevListings => {
+        return { ...prevListings, [randomProduct]: (prevListings[randomProduct] || 0) + 1 };
+      });
+    }, Math.random() * 5000 + 5000); // Random time between 5-10 seconds
+
+    return () => {
+      clearTimeout(npcAction);
+    };
+  }, []);
+
+
+
+
+  const [products, setProducts] = useState({
+    'Stone axe': 0,
+    'Wooden spear': 0,
+    'Stone pickaxe': 0,
+    // ... add other products with initial counts of 0
+  });
+
+  const handleProduceItem = (itemName: string) => {
+    // Check if the item can be produced.
+    const canProduce = Object.keys(items[itemName]).every(resource => {
+      return resources[resource] && resources[resource].amount >= items[itemName][resource];
+    });
+
+    if (!canProduce) {
+      // Handle the scenario where the item cannot be produced.
+      return;
+    }
+
+    setResources(prevResources => {
+      const newResources = { ...prevResources };
+
+      // Deduct the required resources.
+      for (let resource in items[itemName]) {
+        if (newResources[resource]) {
+          newResources[resource].amount -= items[itemName][resource];
+        }
+      }
+
+      // Increase the product count.
+      const currentItemAmount = (newResources[itemName] && newResources[itemName].amount) || 0;
+      newResources[itemName] = {
+        amount: currentItemAmount + 1,
+        type: 'crafted' // Set the "crafted" type for the produced item
+      };
+
+      return newResources;
+    });
+};
+
+
+  const handleBuyFromNPC = (itemName: string) => {
+    // Deduct player's currency and transfer the item.
+    // ...
+
+    setNpcListings(prevListings => {
+      return { ...prevListings, [itemName]: prevListings[itemName] - 1 };
+    });
+  };
+  const handleSellToNPC = (price: number, product: string) => {
+    // Deduct the product from player's resources
+    setResources(prevResources => {
+      if (!prevResources[resources] || prevResources[resources].amount <= 0) {
+        // Handle the scenario where the product is not available or is at zero count
+        // You can show an alert or update some UI state.
+        toast.error(`You don't have enough ${resources} to sell!`);
+        return prevResources;
+      }
+  
+      const currentProductAmount = prevResources[resources].amount;
+      return { 
+        ...prevResources, 
+        [resources]: {
+          ...prevResources[resources],
+          amount: currentProductAmount - 1
+        } 
+      };
+    });
+    
+    // Add the sale amount to player's currency
+    setCurrency(prevCurrency => prevCurrency + price);
+  
+    // Display a toast message or some notification to inform the player of the successful sale
+    toast.success(`Sold ${product} to NPC for ${price} coins!`);
+  };
+  
+
+  const handleSellItem = (itemName: string) => {
+    if (products[itemName] > 0) {
+      // Calculate the selling price
+      const sellingPrice = calculatePrice(itemName, products[itemName]);
+
+      // Update currency
+      setCurrency(prevCurrency => prevCurrency + sellingPrice);
+
+      // Reduce the item count from the player's inventory
+      setProducts(prevProducts => {
+        return { ...prevProducts, [itemName]: prevProducts[itemName] - 1 };
+      });
+    } else {
+      alert("You don't have this item to sell!");
+    }
+  };
+  const handleListItem = (itemName: string) => {
+    if (products[itemName] > 0) {
+      setProducts(prevProducts => {
+        return { ...prevProducts, [itemName]: prevProducts[itemName] - 1 };
+      });
+
+      setPlayerListings(prevListings => {
+        return { ...prevListings, [itemName]: (prevListings[itemName] || 0) + 1 };
+      });
+    } else {
+      alert("You don't have this item to list!");
+    }
+  };
+  useEffect(() => {
+    const npcPurchase = setTimeout(() => {
+      const listedItems = Object.keys(playerListings);
+      if (listedItems.length === 0) return;
+
+      // Choose a random item from the player's listings
+      const randomItem = listedItems[Math.floor(Math.random() * listedItems.length)];
+
+      // Check if the item exists in the listings and if so, process the sale
+      if (playerListings[randomItem] > 0) {
+        const sellingPrice = calculatePrice(randomItem, playerListings[randomItem]);
+
+        setCurrency(prevCurrency => prevCurrency + sellingPrice);
+
+        setPlayerListings(prevListings => {
+          return { ...prevListings, [randomItem]: prevListings[randomItem] - 1 };
+        });
+
+        // Notify the player that an item was sold
+        toast.success(`${randomItem} was sold for ${sellingPrice}!`);
+      }
+    }, Math.random() * 5000 + 5000);  // Random time between 5-10 seconds
+
+    return () => {
+      clearTimeout(npcPurchase);
+    };
+  }, [playerListings, currency]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <div className="flex">
+      <SideNav activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      <div className="container ml-64 px-4 w-full">
+        <Navbar resources={resources} currency={currency} />
+
+        {activeTab === 'dashboard' && (
+          <>
+            <h1 className="text-2xl font-bold mb-6">Welcome to Crafty Capitalist!</h1>
+            {/* <Dashboard resources={resources} products={products} /> */}
+          </>
+        )}
+
+        {activeTab === 'factory' && (
+          <>
+            <ResourceGathering />
+            <Products products={resources} onCraft={handleProduceItem} />
+            <FactoryManagement  />
+          </>
+        )}
+
+        {activeTab === 'itemProduction' && (
+          <ItemProduction />
+        )}
+
+        {activeTab === 'npcBuyers' && (
+          <NPCBuyers />
+        )}
+
+        {activeTab === 'marketplace' && (
+          <Marketplace
+            products={products}
+            npcListings={npcListings}
+            onSell={handleSellItem}
+            onList={handleListItem}
+            onBuyFromNPC={handleBuyFromNPC}
+            playerListings={playerListings}
+          />
+        )}
       </div>
+    </div>
+  );
+};
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default HomePage;
