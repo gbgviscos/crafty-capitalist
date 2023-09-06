@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useFactories } from '../contexts/FactoriesContext';
 import { items } from '@/utils/items';
 
-const FactoryProductionManager: React.FC = ({ children }) => {
+
+const FactoryProductionManager: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const { factories, setFactories, resources, setResources } = useFactories();
 
   const factoriesRef = useRef(factories);

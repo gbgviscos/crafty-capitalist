@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ResourceGatherer from '@/components/Resources/ResourceGather';
 import ItemProduction from '../components/ItemProduction'
 
 
@@ -198,7 +197,7 @@ const HomePage: React.FC = () => {
         {activeTab === 'factory' && (
           <>
             <ResourceGathering />
-            <Products products={resources} onCraft={handleProduceItem} />
+            <Products products={resources} />
             <FactoryManagement  />
           </>
         )}

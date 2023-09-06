@@ -4,7 +4,7 @@ interface ProductsProps {
   products: Record<string, { amount: number, type: string }>;
 }
 
-const Products: React.FC<ProductsProps> = ({ products, onCraft }) => {
+const Products: React.FC<ProductsProps> = ({ products }) => {
   return (
     <div className="border rounded-lg shadow-lg p-4 mb-4 bg-white">
       <h2 className="text-xl font-semibold mb-4 border-b pb-2">My Items</h2>
