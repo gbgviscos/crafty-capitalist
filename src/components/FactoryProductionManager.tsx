@@ -70,7 +70,7 @@ const FactoryProductionManager: React.FC<React.PropsWithChildren<{}>> = ({ child
 
       return factory;
     });
-
+    console.log(updatedResources)
     setResources(updatedResources);
     setFactories(newFactories);
   };

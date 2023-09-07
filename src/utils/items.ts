@@ -3,67 +3,78 @@ export const resources = {
     value: 2,
     complexity: 1,
     attributes: ['flexible', 'flammable'],
-    rarity: 'common'
+    rarity: 'common',
+    spawnLocations: ['forest', 'grassland']
   },
   stone: {
     value: 3,
     complexity: 2,
     attributes: ['hard', 'durable'],
-    rarity: 'common'
+    rarity: 'common',
+    spawnLocations: ['mountain', 'grassland']
   },
   iron: {
     value: 5,
     complexity: 3,
     attributes: ['durable', 'malleable'],
-    rarity: 'uncommon'
+    rarity: 'uncommon',
+    spawnLocations: ['mountain', 'grassland']
   },
   coal: {
     value: 4,
     complexity: 2,
     attributes: ['combustible'],
-    rarity: 'uncommon'
+    rarity: 'uncommon',
+    spawnLocations: ['mountain', 'forest']
   },
   gold: {
     value: 10,
     complexity: 2,
     attributes: ['ductile', 'non-corrosive'],
-    rarity: 'rare'
+    rarity: 'rare',
+    spawnLocations: ['mountain']
   },
   silver: {
     value: 8,
     complexity: 2,
     attributes: ['ductile', 'conductive'],
-    rarity: 'uncommon'
+    rarity: 'uncommon',
+    spawnLocations: ['mountain', 'grassland']
   },
   diamond: {
     value: 20,
     complexity: 5,
     attributes: ['hard', 'lustrous'],
-    rarity: 'very rare'
+    rarity: 'very rare',
+    spawnLocations: ['mountain']
   },
   emerald: {
     value: 15,
     complexity: 4,
     attributes: ['lustrous'],
-    rarity: 'very rare'
+    rarity: 'very rare',
+    spawnLocations: ['mountain', 'wetland']
   },
   copper: {
     value: 4,
     complexity: 2,
     attributes: ['ductile', 'conductive'],
-    rarity: 'common'
+    rarity: 'common',
+    spawnLocations: ['mountain', 'grassland']
   },
   tin: {
     value: 3,
     complexity: 1,
     attributes: ['malleable'],
-    rarity: 'common'
+    rarity: 'common',
+    spawnLocations: ['mountain', 'grassland']
   },
   obsidian: {
     value: 6,
     complexity: 3,
     attributes: ['sharp', 'glassy'],
-    rarity: 'uncommon'
+    rarity: 'uncommon',
+    spawnLocations: ['mountain', 'desert']
   }
   // ... other resources ...
 };

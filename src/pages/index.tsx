@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ItemProduction from '../components/ItemProduction'
 
-
+import BuyLand from '@/components/land/BuyLand';
 import Dashboard from '../components/Dashboard';
 import Navbar from '../components/Navbar'
 import SideNav from '../components/SideNav'
@@ -15,12 +15,12 @@ import { calculatePrice } from '@/utils/pricing';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFactories } from '@/contexts/FactoriesContext';
+import OwnedLand from '@/components/land/OwnedLand';
 
 const HomePage: React.FC = () => {
   const [npcListings, setNpcListings] = useState({});
   const [playerListings, setPlayerListings] = useState<{ [key: string]: number }>({});
-  const [currency, setCurrency] = useState(100);  // Starting with 100 as an example
-  const [activeTab, setActiveTab] = React.useState('dashboard');
+  const [activeTab, setActiveTab] = React.useState('factory');
   const { factories, setFactories } = useFactories();
   const { resources, setResources } = useFactories();
 
@@ -95,49 +95,23 @@ const HomePage: React.FC = () => {
       return { ...prevListings, [itemName]: prevListings[itemName] - 1 };
     });
   };
-  const handleSellToNPC = (price: number, product: string) => {
-    // Deduct the product from player's resources
-    setResources(prevResources => {
-      if (!prevResources[resources] || prevResources[resources].amount <= 0) {
-        // Handle the scenario where the product is not available or is at zero count
-        // You can show an alert or update some UI state.
-        toast.error(`You don't have enough ${resources} to sell!`);
-        return prevResources;
-      }
-  
-      const currentProductAmount = prevResources[resources].amount;
-      return { 
-        ...prevResources, 
-        [resources]: {
-          ...prevResources[resources],
-          amount: currentProductAmount - 1
-        } 
-      };
-    });
-    
-    // Add the sale amount to player's currency
-    setCurrency(prevCurrency => prevCurrency + price);
-  
-    // Display a toast message or some notification to inform the player of the successful sale
-    toast.success(`Sold ${product} to NPC for ${price} coins!`);
-  };
   
 
   const handleSellItem = (itemName: string) => {
-    if (products[itemName] > 0) {
-      // Calculate the selling price
-      const sellingPrice = calculatePrice(itemName, products[itemName]);
+    // if (products[itemName] > 0) {
+    //   // Calculate the selling price
+    //   const sellingPrice = calculatePrice(itemName, products[itemName]);
 
-      // Update currency
-      setCurrency(prevCurrency => prevCurrency + sellingPrice);
+    //   // Update currency
+    //   setCurrency(prevCurrency => prevCurrency + sellingPrice);
 
-      // Reduce the item count from the player's inventory
-      setProducts(prevProducts => {
-        return { ...prevProducts, [itemName]: prevProducts[itemName] - 1 };
-      });
-    } else {
-      alert("You don't have this item to sell!");
-    }
+    //   // Reduce the item count from the player's inventory
+    //   setProducts(prevProducts => {
+    //     return { ...prevProducts, [itemName]: prevProducts[itemName] - 1 };
+    //   });
+    // } else {
+    //   alert("You don't have this item to sell!");
+    // }
   };
   const handleListItem = (itemName: string) => {
     if (products[itemName] > 0) {
@@ -164,7 +138,7 @@ const HomePage: React.FC = () => {
       if (playerListings[randomItem] > 0) {
         const sellingPrice = calculatePrice(randomItem, playerListings[randomItem]);
 
-        setCurrency(prevCurrency => prevCurrency + sellingPrice);
+        // setCurrency(prevCurrency => prevCurrency + sellingPrice);
 
         setPlayerListings(prevListings => {
           return { ...prevListings, [randomItem]: prevListings[randomItem] - 1 };
@@ -178,19 +152,18 @@ const HomePage: React.FC = () => {
     return () => {
       clearTimeout(npcPurchase);
     };
-  }, [playerListings, currency]);
+  }, [playerListings]);
 
   return (
     <div className="flex">
       <SideNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="container ml-64 px-4 w-full">
-        <Navbar resources={resources} currency={currency} />
+        <Navbar resources={resources}/>
 
-        {activeTab === 'dashboard' && (
+        {activeTab === 'BuyLand' && (
           <>
-            <h1 className="text-2xl font-bold mb-6">Welcome to Crafty Capitalist!</h1>
-            {/* <Dashboard resources={resources} products={products} /> */}
+            <BuyLand/>
           </>
         )}
 
@@ -199,6 +172,7 @@ const HomePage: React.FC = () => {
             <ResourceGathering />
             <Products products={resources} />
             <FactoryManagement  />
+            <OwnedLand />
           </>
         )}
 

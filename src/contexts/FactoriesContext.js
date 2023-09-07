@@ -8,11 +8,12 @@ export const useFactories = () => {
 
 export const FactoriesProvider = ({ children }) => {
   const [factories, setFactories] = useState([]);
+  const [land, setLand] = useState([]);
   const [resources, setResources] = useState({
     wood: { amount: 0, type: 'raw' },
     stone: { amount: 0, type: 'raw' },
     gold: { amount: 0, type: 'raw' },
-    land: { amount: 2, type: 'land'}
+    currency: {amount: 100}
   });
 
   const handleGatherResource = (resource) => {
@@ -32,7 +33,7 @@ export const FactoriesProvider = ({ children }) => {
   };
 
   return (
-    <FactoriesContext.Provider value={{ factories, setFactories, resources, setResources, gatherResource: handleGatherResource }}>
+    <FactoriesContext.Provider value={{ land, setLand, factories, setFactories, resources, setResources, gatherResource: handleGatherResource }}>
       {children}
     </FactoriesContext.Provider>
   );
