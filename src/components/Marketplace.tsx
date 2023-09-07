@@ -16,6 +16,11 @@ type MarketplaceProps = {
   };
 };
 
+type Resource = {
+  amount: number;
+  type?: string;  // Using optional because 'currency' doesn't have 'type'
+};
+
 const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPlayerListings, initialResources }) => {
   const [npcListings, setNpcListings] = useState(initialNpcListings);
   const [playerListings, setPlayerListings] = useState(initialPlayerListings);
@@ -122,7 +127,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPl
 
 {/* NPC Listings */}
 <ul>
-  {Object.entries(resources).filter(([product]) => items[product] && product !== "currency").map(([product, resourceInfo]) => (  // Filtering to ensure only items from utils/items are shown and not the currency
+{Object.entries(resources).filter(([product]) => items[product] && product !== "currency").map(([product, resourceInfo]: [string, Resource]) => (  // Filtering to ensure only items from utils/items are shown and not the currency
     <li key={product} className="flex justify-between mb-2">
       <span>{product} (Price: {calculatePrice(product, resourceInfo.amount)}):</span>
       <div>
