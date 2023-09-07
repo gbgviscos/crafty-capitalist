@@ -22,7 +22,9 @@ const OwnedLand: React.FC = () => {
             <h4 className="text-lg font-semibold border-b pb-2 mb-4">Available Resources:</h4>
             <ul>
               {Object.entries(plot.resources).map(([resource, amount]) => (
-                <li key={resource} className="mb-2"><strong className="font-medium">{resource}:</strong> {amount}</li>
+                <li key={resource} className="mb-2">
+                <strong className="font-medium">{resource}:</strong> {JSON.stringify(amount)}
+              </li>
               ))}
             </ul>
             
