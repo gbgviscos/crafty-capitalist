@@ -10,7 +10,6 @@ const FactoryItem: React.FC<FactoryItemProps> = ({ factory, onConfigure }) => {
   const [selectedRecipe, setSelectedRecipe] = useState(factory.recipe);
 
   const handleSetProductionClick = () => {
-    console.log("Selected Recipe in FactoryItem:", selectedRecipe);
     onConfigure(selectedRecipe);
   }
 
@@ -19,6 +18,8 @@ const FactoryItem: React.FC<FactoryItemProps> = ({ factory, onConfigure }) => {
       return Object.keys(items);
     } else if (factory.type === 'extraction') {
       return Object.keys(resources);  // Assuming 'resources' is similar to 'items'
+    } else if (factory.type === 'farm') {
+      return Object.keys(resources).filter(itemKey => resources[itemKey].attributes.includes('plantable'));
     } else {
       return [];  // Return empty array for unsupported factory types
     }
@@ -26,11 +27,14 @@ const FactoryItem: React.FC<FactoryItemProps> = ({ factory, onConfigure }) => {
 
   return (
     <div className="flex justify-between items-center mb-2 border p-2">
-      <span>Factory id: {factory.id}</span>
+      <span>Facility type: {factory.type}</span>
       <span>Location: {factory.location}</span>
       <span>Producing: {factory.recipe || "Not Configured"}</span>
       <div>
         <select value={selectedRecipe} onChange={e => setSelectedRecipe(e.target.value)}>
+          {/* Default "None" option */}
+          <option value="none">None</option>
+
           {getOptions().map(option => (
             <option key={option} value={option}>
               {option}

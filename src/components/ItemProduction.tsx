@@ -58,7 +58,6 @@ const ItemProduction: React.FC = () => {
       coal: 0,
       gold: 0,
     });
-    console.log(items)
   };
 
   return (

@@ -1,4 +1,4 @@
-export type BuildingType = "production" | "extraction" | "workshop" | "house";
+export type BuildingType = "production" | "extraction" | "workshop" | "house" | 'farm';
 
 export type Building = {
     id: string;

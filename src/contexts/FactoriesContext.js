@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const FactoriesContext = createContext();
 
@@ -19,7 +20,7 @@ export const FactoriesProvider = ({ children }) => {
   const handleGatherResource = (resource) => {
     setResources(prevResources => {
       if (!prevResources[resource]) {
-          console.error(`Resource "${resource}" not found.`);
+          toast.error(`Resource "${resource}" not found.`);
           return prevResources; // No changes
       }
 

@@ -55,7 +55,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPl
       }
 
       if (!basePrice) {
-          console.error(`Price not found for item/resource: ${item}`);
+          toast.error(`Price not found for item/resource: ${item}`);
           return 0;  // Default to 0 if price not found
       }
 
@@ -85,11 +85,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPl
 
       if (playerListings[randomItem] > 0 && resources[randomItem] && resources[randomItem].amount > 0) {
         const sellingPrice = calculatePrice(randomItem, playerListings[randomItem]);
-        console.log(sellingPrice)
-        console.log(randomItem)
 
         // Update currency
-        console.log(resources)
         setResources(prevResources => ({
           ...prevResources,
           currency: { amount: prevResources.currency.amount + sellingPrice },

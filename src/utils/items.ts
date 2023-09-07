@@ -2,7 +2,7 @@ export const resources = {
   wood: {
     value: 2,
     complexity: 1,
-    attributes: ['flexible', 'flammable'],
+    attributes: ['flexible', 'flammable', 'plantable'],
     rarity: 'common',
     spawnLocations: ['forest', 'grassland']
   },
@@ -11,7 +11,7 @@ export const resources = {
     complexity: 2,
     attributes: ['hard', 'durable'],
     rarity: 'common',
-    spawnLocations: ['mountain', 'grassland']
+    spawnLocations: ['mountain', 'grassland', 'forest']
   },
   iron: {
     value: 5,

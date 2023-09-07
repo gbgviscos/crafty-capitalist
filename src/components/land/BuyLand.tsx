@@ -18,7 +18,6 @@ const BuyLand: React.FC = () => {
     newLandData.name = generateLandName(terrainType);
     setLandData(newLandData);
     setLand(prevLand => [...prevLand, newLandData]);
-    console.log(land)
   };
 
   return (

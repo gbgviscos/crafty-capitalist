@@ -35,7 +35,6 @@ function userReducer(state, action) {
     case GATHER_RESOURCE:
       const resource = action.payload;
       if (!state.userData.resources[resource]) {
-        console.error(`Resource "${resource}" not found.`);
         return state;
       }
       const updatedResource = {

@@ -39,6 +39,20 @@ const FactoryProductionManager: React.FC<React.PropsWithChildren<{}>> = ({ child
     return updatedResources;
   };
 
+  const addResourcesToLandPlot = (location, resourceType, additionAmount = 1) => {
+    const landPlotIndex = landRef.current.findIndex(plot => plot.name === location);
+    
+    if (landPlotIndex === -1) return false;
+
+    if (!landRef.current[landPlotIndex].resources[resourceType]) {
+        landRef.current[landPlotIndex].resources[resourceType] = 0;
+    }
+    
+    landRef.current[landPlotIndex].resources[resourceType] += additionAmount;
+    return true;
+};
+
+
   const deductResourcesFromLandPlot = (location, resourceType) => {
 
     const landPlotIndex = landRef.current.findIndex(plot => {
@@ -52,45 +66,66 @@ const FactoryProductionManager: React.FC<React.PropsWithChildren<{}>> = ({ child
     return true;
 };
 
+const handleProduction = () => {
+  let updatedLand = [...landRef.current];
 
-
-  const handleProduction = () => {
-    let updatedLand = [...landRef.current];
-
-    const newFactories = factoriesRef.current.map(factory => {
-      if (factory.type === 'production') {
-        if (!factory.recipe || !hasRequiredResources(factory.recipe)) {
-          return factory;
-        }
-        let updatedResources = deductResourcesForRecipe(factory.recipe, resourcesRef.current);
-        if (!updatedResources[factory.recipe]) {
-          updatedResources[factory.recipe] = {
+  const newFactories = factoriesRef.current.map(factory => {
+    // If the recipe is 'none', return the factory without any production
+    if (!factory.recipe || factory.recipe === 'none' || factory.recipe === 'null') {
+      return factory;
+    }
+    
+    
+    if (factory.type === 'production') {
+      if (!hasRequiredResources(factory.recipe)) {
+        return factory;
+      }
+      let updatedResources = deductResourcesForRecipe(factory.recipe, resourcesRef.current);
+      if (!updatedResources[factory.recipe]) {
+        updatedResources[factory.recipe] = {
+          amount: 0,
+          type: items[factory.recipe].type
+        };
+      }
+      updatedResources[factory.recipe].amount += factory.productionRate;
+      resourcesRef.current = updatedResources;
+      return { ...factory, lastProduced: Date.now() };
+    } else if (factory.type === 'extraction') {
+      if (deductResourcesFromLandPlot(factory.location, factory.recipe)) {
+        if (!resourcesRef.current[factory.recipe]) {
+          resourcesRef.current[factory.recipe] = {
             amount: 0,
-            type: items[factory.recipe].type
+            type: items[factory.recipe]?.type || 'unknown'
           };
         }
-        updatedResources[factory.recipe].amount += factory.productionRate;
-        resourcesRef.current = updatedResources;
+        resourcesRef.current[factory.recipe].amount += factory.productionRate;
         return { ...factory, lastProduced: Date.now() };
-      } else if (factory.type === 'extraction') {
-        if (deductResourcesFromLandPlot(factory.location, factory.recipe)) {
-          if (!resourcesRef.current[factory.recipe]) {
-            resourcesRef.current[factory.recipe] = {
+      }
+    } else if (factory.type === 'farm') {
+      const landPlot = landRef.current.find(plot => plot.name === factory.location);
+      if (!landPlot) return factory;
+  
+      const fertilityRate = landPlot.fertility; // You might want to re-evaluate this logic. If fertility is 50, then factory.productionRate + 50 might not be what you want.
+      const productionAmount = factory.productionRate + fertilityRate;
+      
+      addResourcesToLandPlot(factory.location, factory.recipe, productionAmount);
+      
+      if (!resourcesRef.current[factory.recipe]) {
+          resourcesRef.current[factory.recipe] = {
               amount: 0,
               type: items[factory.recipe]?.type || 'unknown'
-            };
-          }
-          resourcesRef.current[factory.recipe].amount += factory.productionRate;
-          return { ...factory, lastProduced: Date.now() };
-        }
+          };
       }
-      return factory;
-    });
+      // resourcesRef.current[factory.recipe].amount += productionAmount;
+      return { ...factory, lastProduced: Date.now() };
+  }
+    return factory;
+  });
 
-    setLand(updatedLand);
-    setResources(resourcesRef.current);
-    setFactories(newFactories);
-  };
+  setLand(updatedLand);
+  setResources(resourcesRef.current);
+  setFactories(newFactories);
+};
 
   useEffect(() => {
     const productionInterval = setInterval(() => {

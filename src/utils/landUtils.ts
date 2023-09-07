@@ -1,5 +1,6 @@
 import { terrainTypes } from '../utils/terrainTypes';
 import { resources } from '../utils/items';
+import { toast } from 'react-toastify';
 const generateLandName = (terrainType: string) => {
     const randomNumber = Math.floor(Math.random() * 1000);
     return `${terrainType.charAt(0).toUpperCase() + terrainType.slice(1)}-${randomNumber}`;
@@ -21,7 +22,7 @@ export const generateLandPlot = (terrainType: string) => {
     const terrain = terrainTypes[terrainType];
 
     if (!terrain) {
-        console.error(`Terrain type "${terrainType}" not found.`);
+        toast.error(`Terrain type "${terrainType}" not found.`);
         return null;
     }
 
