@@ -3,6 +3,7 @@ import { items } from '@/utils/items';
 // import { calculatePrice } from '@/utils/pricing';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useFactories } from '@/contexts/FactoriesContext';
 
 type MarketplaceProps = {
   initialNpcListings: { [key: string]: number };
@@ -18,7 +19,7 @@ type MarketplaceProps = {
 const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPlayerListings, initialResources }) => {
   const [npcListings, setNpcListings] = useState(initialNpcListings);
   const [playerListings, setPlayerListings] = useState(initialPlayerListings);
-  const [resources, setResources] = useState(initialResources);
+  const {resources, setResources} = useFactories();
 
   const handleBuyFromNPC = (itemName: string) => {
     setNpcListings(prevListings => {
@@ -28,9 +29,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPl
 
   const handleSellItem = (itemName: string) => {
     if (resources[itemName] && resources[itemName].amount > 0) {
-      const sellingPrice = calculatePrice(itemName, resources[itemName].value);
-
-      // Update currency
+      const sellingPrice = calculatePrice(itemName, resources[itemName].amount);
+  
+      // Update currency and reduce the item count
       setResources(prevResources => ({
         ...prevResources,
         currency: { amount: prevResources.currency.amount + sellingPrice },
@@ -40,6 +41,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ initialNpcListings, initialPl
       alert("You don't have this item to sell!");
     }
   };
+  
   const calculatePrice = (item: string, supply: number) => {
       let basePrice = items[item]?.value;
       // If not found in items, check in resources
