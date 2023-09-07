@@ -83,7 +83,6 @@ const NPCBuyers: React.FC = () => {
         return resources[npc.interest] && resources[npc.interest].amount > 0;
     }
 
-    console.log('Player products:', resources);
 
     return (
         <div className="border p-4 mb-4">

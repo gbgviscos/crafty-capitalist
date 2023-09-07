@@ -27,17 +27,15 @@ const OwnedLand: React.FC = () => {
               </li>
               ))}
             </ul>
-            
+            <div className="mt-4 bg-gray-200 p-2 text-center font-bold">
+              Construction
+            </div>
             <div className="mt-4">
                 <h4 className="text-lg font-semibold border-b pb-2 mb-4">Factories:</h4>
                 {/* You can add the FactoryManagement component logic here */}
                 <LandManagement2 
                 landPlot={plot}
                 onUpdateLand={handleUpdateLand} />
-            </div>
-
-            <div className="mt-4 bg-gray-200 p-2 text-center font-bold">
-              Construction
             </div>
           </div>
         ))}

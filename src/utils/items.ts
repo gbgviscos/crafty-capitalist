@@ -112,5 +112,23 @@ export const items = {
           consumed: true                // consumed during production/hunting
       }
   },
+  'Cart': {
+    resources: {
+        wood: 4,
+        iron: 2,
+        wheels: 4, // Assuming you need wheels
+    },
+    type: "vehicle", // Categorized as a vehicle
+    value: 12, // Value in your game's currency
+    complexity: 6, // Represents the complexity of making a cart
+    capacity: 500, // The maximum load capacity of the cart in kilograms or your game's equivalent
+    attributes: ["durable", "transport"],
+    enhancements: {
+        type: "reinforcement", // An enhancement related to vehicle reinforcement
+        durabilityIncrease: 0.2, // 20% increase in durability
+        speedIncrease: 0.1, // 10% increase in movement speed when pulled
+        consumed: false // Not consumed during production
+    }
+},
   // ... other item definitions ...
 };

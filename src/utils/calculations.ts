@@ -1,13 +1,20 @@
-import { items, resources } from "./items";
+import { items, resources } from '@/utils/items';
 
 export const calculatePrice = (item: string, supply: number) => {
-    const basePrice = items[item]?.value || resources[item]?.value;
+    console.log("Hello!")
+    let basePrice = items[item]?.value;
+    console.log(basePrice)
 
-    if (basePrice === undefined) {
-        throw new Error(`Base price for item "${item}" not found.`);
+    // If not found in items, check in resources
+    if (!basePrice) {
+        basePrice = resources[item]?.value;
+        console.log(basePrice)
     }
 
-    // Here's a simple formula to alter the price based on supply.
-    // You can adjust the constants to control price elasticity.
+    if (!basePrice) {
+        console.error(`Price not found for item/resource: ${item}`);
+        return 0;  // Default to 0 if price not found
+    }
+
     return Math.round(basePrice * (1.0 / (1 + 0.1 * supply)));
 };

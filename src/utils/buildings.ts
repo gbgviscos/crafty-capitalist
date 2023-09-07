@@ -1,12 +1,28 @@
-export type Factory = {
+export type BuildingType = "production" | "extraction" | "workshop" | "house";
+
+export type Building = {
     id: string;
-    type: "resource extraction" | "production";
+    type: BuildingType;
     size: number;
     upgrades: string[];
     resourceTarget?: string;
-    recipe: null,
-    lastProduced: Date,
-    productionTime: 10000, // Assuming you want 10 seconds like the timers
-    productionRate: 1,
-    location: string
+    recipe: string | null;
+    lastProduced: Date;
+    productionTime: number;
+    productionRate: number;
+    location: string;
 };
+
+// If Workshop and House have unique properties, extend from the Building type:
+
+export type Workshop = Building & {
+    // additional properties specific to Workshop...
+};
+
+export type House = Building & {
+    // additional properties specific to House...
+};
+
+export type Factory = Building & {
+    
+}

@@ -28,7 +28,7 @@ const FactoryManagement: React.FC = () => {
 
   return (
     <div className="border p-4 mb-4">
-      <h2 className="text-xl mb-2">Factories</h2>
+      <h2 className="text-xl mb-2">All Factories</h2>
       
       {factories.map((factory, index) => (
         <FactoryItem 
@@ -38,7 +38,7 @@ const FactoryManagement: React.FC = () => {
         />
       ))}
 
-      <button onClick={onBuyFactory} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Buy Factory</button>
+      
     </div>
   );
 }

@@ -44,16 +44,6 @@ const HomePage: React.FC = () => {
     };
   }, []);
 
-
-
-
-  const [products, setProducts] = useState({
-    'Stone axe': 0,
-    'Wooden spear': 0,
-    'Stone pickaxe': 0,
-    // ... add other products with initial counts of 0
-  });
-
   const handleProduceItem = (itemName: string) => {
     // Check if the item can be produced.
     const canProduce = Object.keys(items[itemName]).every(resource => {
@@ -84,7 +74,7 @@ const HomePage: React.FC = () => {
 
       return newResources;
     });
-};
+  };
 
 
   const handleBuyFromNPC = (itemName: string) => {
@@ -95,75 +85,17 @@ const HomePage: React.FC = () => {
       return { ...prevListings, [itemName]: prevListings[itemName] - 1 };
     });
   };
-  
-
-  const handleSellItem = (itemName: string) => {
-    // if (products[itemName] > 0) {
-    //   // Calculate the selling price
-    //   const sellingPrice = calculatePrice(itemName, products[itemName]);
-
-    //   // Update currency
-    //   setCurrency(prevCurrency => prevCurrency + sellingPrice);
-
-    //   // Reduce the item count from the player's inventory
-    //   setProducts(prevProducts => {
-    //     return { ...prevProducts, [itemName]: prevProducts[itemName] - 1 };
-    //   });
-    // } else {
-    //   alert("You don't have this item to sell!");
-    // }
-  };
-  const handleListItem = (itemName: string) => {
-    if (products[itemName] > 0) {
-      setProducts(prevProducts => {
-        return { ...prevProducts, [itemName]: prevProducts[itemName] - 1 };
-      });
-
-      setPlayerListings(prevListings => {
-        return { ...prevListings, [itemName]: (prevListings[itemName] || 0) + 1 };
-      });
-    } else {
-      alert("You don't have this item to list!");
-    }
-  };
-  useEffect(() => {
-    const npcPurchase = setTimeout(() => {
-      const listedItems = Object.keys(playerListings);
-      if (listedItems.length === 0) return;
-
-      // Choose a random item from the player's listings
-      const randomItem = listedItems[Math.floor(Math.random() * listedItems.length)];
-
-      // Check if the item exists in the listings and if so, process the sale
-      if (playerListings[randomItem] > 0) {
-        const sellingPrice = calculatePrice(randomItem, playerListings[randomItem]);
-
-        // setCurrency(prevCurrency => prevCurrency + sellingPrice);
-
-        setPlayerListings(prevListings => {
-          return { ...prevListings, [randomItem]: prevListings[randomItem] - 1 };
-        });
-
-        // Notify the player that an item was sold
-        toast.success(`${randomItem} was sold for ${sellingPrice}!`);
-      }
-    }, Math.random() * 5000 + 5000);  // Random time between 5-10 seconds
-
-    return () => {
-      clearTimeout(npcPurchase);
-    };
-  }, [playerListings]);
 
   return (
     <div className="flex">
       <SideNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="container ml-64 px-4 w-full">
-        <Navbar resources={resources}/>
+        <Navbar resources={resources} />
 
         {activeTab === 'BuyLand' && (
           <>
-            <BuyLand/>
+            <BuyLand />
           </>
         )}
 
@@ -171,7 +103,7 @@ const HomePage: React.FC = () => {
           <>
             <ResourceGathering />
             <Products products={resources} />
-            <FactoryManagement  />
+            <FactoryManagement />
             <OwnedLand />
           </>
         )}
@@ -186,12 +118,9 @@ const HomePage: React.FC = () => {
 
         {activeTab === 'marketplace' && (
           <Marketplace
-            products={products}
-            npcListings={npcListings}
-            onSell={handleSellItem}
-            onList={handleListItem}
-            onBuyFromNPC={handleBuyFromNPC}
-            playerListings={playerListings}
+            initialNpcListings={npcListings}
+            initialPlayerListings={playerListings}
+            initialResources={resources}
           />
         )}
       </div>

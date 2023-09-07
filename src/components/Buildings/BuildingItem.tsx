@@ -1,15 +1,15 @@
 import React from 'react';
-import { Factory } from '@/utils/buildings';
+import { Building, BuildingType } from '@/utils/buildings';
 import { items } from '@/utils/items';
 import { useState } from 'react';
 
 interface BuildingItemProps {
-    factory: Factory;
+    building: Building;
     resources: { [key: string]: { amount: number, type: string } }
     // Add other props if needed...
 }
 
-const BuildingItem: React.FC<BuildingItemProps> = ({ factory, resources }) => {
+const BuildingItem: React.FC<BuildingItemProps> = ({ building, resources }) => {
 
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
 
@@ -23,24 +23,28 @@ const BuildingItem: React.FC<BuildingItemProps> = ({ factory, resources }) => {
 
     const handleToolChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedTool(event.target.value);
-        // Here you can also handle the logic to assign the tool to the factory
+        // Here you can also handle the logic to assign the tool to the building
     }
 
     return (
         <div className="p-4 border mb-2 rounded shadow-md">
-            <h4 className="mb-4 text-xl font-semibold">Factory Details</h4>
+            <h4 className="mb-4 text-xl font-semibold">{building.type.charAt(0).toUpperCase() + building.type.slice(1)} Details</h4>
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <span className="font-medium">Type:</span> {factory.type}
+                    <span className="font-medium">Type:</span> {building.type}
                 </div>
+                {building.type === "production" && (
+                    <>
+                        <div>
+                            <span className="font-medium">Production Rate:</span> {building.productionRate}
+                        </div>
+                        <div>
+                            <span className="font-medium">Recipe:</span> {building.recipe || 'None'}
+                        </div>
+                    </>
+                )}
                 <div>
-                    <span className="font-medium">Production Rate:</span> {factory.productionRate}
-                </div>
-                <div>
-                    <span className="font-medium">Recipe:</span> {factory.recipe || 'None'}
-                </div>
-                <div>
-                    <span className="font-medium">Size:</span> {factory.size}
+                    <span className="font-medium">Size:</span> {building.size}
                 </div>
             </div>
             <div className="mt-4">
