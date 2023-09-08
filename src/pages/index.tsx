@@ -11,7 +11,6 @@ import Marketplace from '@/components/Marketplace';
 import Products from '@/components/Products';
 import NPCBuyers from '@/components/NPCBuyers';
 import { items } from '@/utils/items';
-import { calculatePrice } from '@/utils/pricing';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFactories } from '@/contexts/FactoriesContext';

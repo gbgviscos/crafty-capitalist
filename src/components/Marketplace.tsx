@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { items } from '@/utils/items';
-// import { calculatePrice } from '@/utils/pricing';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFactories } from '@/contexts/FactoriesContext';

@@ -11,10 +11,10 @@ export const FactoriesProvider = ({ children }) => {
   const [factories, setFactories] = useState([]);
   const [land, setLand] = useState([]);
   const [resources, setResources] = useState({
-    wood: { amount: 0, type: 'raw' },
-    stone: { amount: 0, type: 'raw' },
+    wood: { amount: 50, type: 'raw' },
+    stone: { amount: 50, type: 'raw' },
     gold: { amount: 0, type: 'raw' },
-    currency: {amount: 100}
+    currency: {amount: 450}
   });
 
   const handleGatherResource = (resource) => {
