@@ -1,4 +1,4 @@
-import { items, resources } from '@/utils/items';
+import { utilityItems as items, resources } from '@/utils/items';
 import { toast } from 'react-toastify';
 
 export const calculatePrice = (item: string, supply: number) => {
