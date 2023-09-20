@@ -186,13 +186,13 @@ const ItemProduction: React.FC = () => {
       <div>
       <h1>Items</h1>
       <ul>
-      {
+      {/* {
     Object.values(items).map((item, index) => (
         <tr key={index}>
             <td className="border p-2">{item.name}</td>
         </tr>
     ))
-}
+} */}
 
 
 
