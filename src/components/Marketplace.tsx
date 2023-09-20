@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { items } from '@/utils/items';
+import { utilityItems as items } from '@/utils/items';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFactories } from '@/contexts/FactoriesContext';

@@ -1,23 +1,10 @@
 import React, { useEffect } from 'react';
 import FactoryItem from './FactoryItem';
 import { useFactories } from '../contexts/FactoriesContext';
-import { items } from '@/utils/items';
+
 
 const FactoryManagement: React.FC = () => {
-  const { factories, setFactories, resources, setResources } = useFactories();
-
-  const onBuyFactory = () => {
-    const newFactory = {
-      id: Date.now().toString(),
-      recipe: null,
-      lastProduced: Date.now(),
-      productionTime: 10000, // Assuming you want 10 seconds like the timers
-      productionRate: 1,
-    };
-
-    // Add the new factory to the factories state
-    setFactories(prevFactories => [...prevFactories, newFactory]);
-};
+  const { factories, setFactories, resources, setResources, items } = useFactories();
 
 
   const onConfigureFactory = (index, selectedRecipe) => {

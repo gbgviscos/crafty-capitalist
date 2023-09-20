@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFactories } from '../contexts/FactoriesContext';  // Assuming the path is correct
-import { items } from '@/utils/items';
+import { utilityItems as items } from '@/utils/items';
 
 interface NPC {
     name: string;

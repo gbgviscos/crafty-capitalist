@@ -6,6 +6,7 @@ export type Building = {
     size: number;
     upgrades: string[];
     resourceTarget?: string;
+    abilities?: string[];
     recipe: string | null;
     lastProduced: Date;
     productionTime: number;

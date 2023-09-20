@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ItemProduction from '../components/ItemProduction'
-
 import BuyLand from '@/components/land/BuyLand';
-import Dashboard from '../components/Dashboard';
 import Navbar from '../components/Navbar'
 import SideNav from '../components/SideNav'
 import ResourceGathering from '@/components/ResourceGathering';
@@ -10,20 +8,29 @@ import FactoryManagement from '@/components/FactoryManagement';
 import Marketplace from '@/components/Marketplace';
 import Products from '@/components/Products';
 import NPCBuyers from '@/components/NPCBuyers';
-import { items } from '@/utils/items';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFactories } from '@/contexts/FactoriesContext';
 import OwnedLand from '@/components/land/OwnedLand';
+import { updateUtilityItems } from '@/utils/items';
 
 const HomePage: React.FC = () => {
   const [npcListings, setNpcListings] = useState({});
   const [playerListings, setPlayerListings] = useState<{ [key: string]: number }>({});
   const [activeTab, setActiveTab] = React.useState('factory');
-  const { factories, setFactories } = useFactories();
-  const { resources, setResources } = useFactories();
+  const { items, setItems, factories, setFactories, resources, setResources } = useFactories();
+  // const [items, setItems] = useState(["empty"]);
 
-
+  useEffect(() => {
+    fetch('/api/getItems') // This will route to your API route
+      .then((response) => response.json())
+      .then((data) => {
+        setItems(data);
+        updateUtilityItems(data); // Call updateUtilityItems with fetched data
+        console.log(data); // Log the fetched data
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
 
 
 
@@ -42,39 +49,6 @@ const HomePage: React.FC = () => {
       clearTimeout(npcAction);
     };
   }, []);
-
-  const handleProduceItem = (itemName: string) => {
-    // Check if the item can be produced.
-    const canProduce = Object.keys(items[itemName]).every(resource => {
-      return resources[resource] && resources[resource].amount >= items[itemName][resource];
-    });
-
-    if (!canProduce) {
-      // Handle the scenario where the item cannot be produced.
-      return;
-    }
-
-    setResources(prevResources => {
-      const newResources = { ...prevResources };
-
-      // Deduct the required resources.
-      for (let resource in items[itemName]) {
-        if (newResources[resource]) {
-          newResources[resource].amount -= items[itemName][resource];
-        }
-      }
-
-      // Increase the product count.
-      const currentItemAmount = (newResources[itemName] && newResources[itemName].amount) || 0;
-      newResources[itemName] = {
-        amount: currentItemAmount + 1,
-        type: 'crafted' // Set the "crafted" type for the produced item
-      };
-
-      return newResources;
-    });
-  };
-
 
   const handleBuyFromNPC = (itemName: string) => {
     // Deduct player's currency and transfer the item.

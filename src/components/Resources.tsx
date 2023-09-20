@@ -11,7 +11,7 @@ const Resources: React.FC<ResourcesProps> = ({ resources }) => {
       <ul>
         {Object.entries(resources).map(([resource, count]) => (
           <li key={resource} className="flex justify-between mb-2">
-            <span>{resource}:</span>
+            <span>{resource.name}:</span>
             <span>{count}</span>
           </li>
         ))}

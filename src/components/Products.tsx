@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ProductsProps {
-  products: Record<string, { amount: number, type: string }>;
+  products: Record<string, { amount: number, type: string, name: string }>;
 }
 
 const Products: React.FC<ProductsProps> = ({ products }) => {
@@ -14,8 +14,8 @@ const Products: React.FC<ProductsProps> = ({ products }) => {
             key={product} 
             className={`flex justify-between items-center p-2 rounded-lg ${index % 2 ? 'bg-gray-100' : 'bg-white'}`}
           >
-            <span className="font-medium flex-1">{product}:</span>
-            <span className="w-16 text-center">{productData.amount}</span>
+            <span className="font-medium flex-1">{productData.name}:</span>
+            <span className="w-16 text-center">{productData.amount.toFixed(1)}</span>
 
             {/* Only show the Craft button if the resource is NOT raw */}
           </li>

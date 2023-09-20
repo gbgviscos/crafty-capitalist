@@ -30,19 +30,24 @@ export const generateLandPlot = (terrainType: string) => {
     const availableResources = {};
     for (let resource in resources) {
         if (resources[resource].spawnLocations.includes(terrainType)) {
-            availableResources[resource] = Math.floor(Math.random() * 100);  // Example to generate a random amount, adjust as necessary
+            // Generate a random amount with a minimum value
+            const minAmount = 100; // Set your desired minimum value
+            availableResources[resource] = Math.floor(Math.random() * (1000 - minAmount + 1)) + minAmount;
+            console.log(availableResources)
         }
     }
 
     const landPlot = {
         terrain: terrainType,
-        fertility: Math.random(),  // Generate a random fertility value between 0 and 1, adjust as necessary
-        water: Math.random() > 0.5,  // 50% chance for a water source, adjust as necessary
-        availableSpace: Math.floor(Math.random() * 100),  // Example to generate random available space, adjust as necessary
+        // Generate a random fertility value with a minimum value
+        fertility: Math.random(), // Min: 0
+        // 50% chance for a water source (no need for a minimum)
+        water: Math.random() > 0.5,
+        // Generate random available space with a minimum value
+        availableSpace: Math.floor(Math.random() * (100 - 10 + 1)) + 10, // Min: 10
         population: 0,
         resources: availableResources,
         name: generateLandName(terrainType)  // Add this line to set the name
     };
-
     return landPlot;
 };

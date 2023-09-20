@@ -1,134 +1,292 @@
 export const resources = {
-  wood: {
-    value: 2,
-    complexity: 1,
-    attributes: ['flexible', 'flammable', 'plantable'],
-    rarity: 'common',
-    spawnLocations: ['forest', 'grassland']
-  },
-  stone: {
-    value: 3,
-    complexity: 2,
-    attributes: ['hard', 'durable'],
-    rarity: 'common',
-    spawnLocations: ['mountain', 'grassland', 'forest']
-  },
-  iron: {
-    value: 5,
-    complexity: 3,
-    attributes: ['durable', 'malleable'],
-    rarity: 'uncommon',
-    spawnLocations: ['mountain', 'grassland']
-  },
-  coal: {
-    value: 4,
-    complexity: 2,
-    attributes: ['combustible'],
-    rarity: 'uncommon',
-    spawnLocations: ['mountain', 'forest']
-  },
-  gold: {
-    value: 10,
-    complexity: 2,
-    attributes: ['ductile', 'non-corrosive'],
-    rarity: 'rare',
-    spawnLocations: ['mountain']
-  },
-  silver: {
-    value: 8,
-    complexity: 2,
-    attributes: ['ductile', 'conductive'],
-    rarity: 'uncommon',
-    spawnLocations: ['mountain', 'grassland']
-  },
-  diamond: {
-    value: 20,
-    complexity: 5,
-    attributes: ['hard', 'lustrous'],
-    rarity: 'very rare',
-    spawnLocations: ['mountain']
-  },
-  emerald: {
-    value: 15,
-    complexity: 4,
-    attributes: ['lustrous'],
-    rarity: 'very rare',
-    spawnLocations: ['mountain', 'wetland']
-  },
-  copper: {
-    value: 4,
-    complexity: 2,
-    attributes: ['ductile', 'conductive'],
-    rarity: 'common',
-    spawnLocations: ['mountain', 'grassland']
-  },
-  tin: {
-    value: 3,
-    complexity: 1,
-    attributes: ['malleable'],
-    rarity: 'common',
-    spawnLocations: ['mountain', 'grassland']
-  },
-  obsidian: {
-    value: 6,
-    complexity: 3,
-    attributes: ['sharp', 'glassy'],
-    rarity: 'uncommon',
-    spawnLocations: ['mountain', 'desert']
-  }
+  "wood":{
+    "name":"Wood",
+    "value":2,
+    "complexity":1,
+    "attributes":[
+       "flexible",
+       "flammable",
+       "plantable"
+    ],
+    "rarity":"common",
+    "spawnLocations":[
+       "forest",
+       "grassland"
+    ]
+ },
+ "stone":{
+  "name":"Stone",
+  "value":3,
+  "complexity":2,
+  "attributes":[
+     "hard",
+     "durable"
+  ],
+  "rarity":"common",
+  "spawnLocations":[
+     "mountain",
+     "grassland",
+     "forest"
+  ]
+},
+"ironOre":{
+  "name":"Iron Ore",
+  "value":5,
+  "complexity":3,
+  "attributes":[
+     "durable",
+     "malleable"
+  ],
+  "rarity":"uncommon",
+  "spawnLocations":[
+     "mountain",
+     "grassland"
+  ]
+},
+"coal":{
+  "name":"Coal",
+  "value":4,
+  "complexity":2,
+  "attributes":[
+     "combustible"
+  ],
+  "rarity":"uncommon",
+  "spawnLocations":[
+     "mountain",
+     "forest"
+  ]
+},
+"gold":{
+  "name":"Gold",
+  "value":10,
+  "complexity":2,
+  "attributes":[
+     "ductile",
+     "non-corrosive"
+  ],
+  "rarity":"rare",
+  "spawnLocations":[
+     "mountain"
+  ]
+},
+"silver":{
+  "name":"Silver",
+  "value":8,
+  "complexity":2,
+  "attributes":[
+     "ductile",
+     "conductive"
+  ],
+  "rarity":"uncommon",
+  "spawnLocations":[
+     "mountain",
+     "grassland"
+  ]
+},
+"diamond":{
+  "name":"Diamond",
+  "value":20,
+  "complexity":5,
+  "attributes":[
+     "hard",
+     "lustrous"
+  ],
+  "rarity":"very rare",
+  "spawnLocations":[
+     "mountain"
+  ]
+},
+"emerald":{
+  "name":"Emerald",
+  "value":15,
+  "complexity":4,
+  "attributes":[
+     "lustrous"
+  ],
+  "rarity":"very rare",
+  "spawnLocations":[
+     "mountain",
+     "wetland"
+  ]
+},
+"copper":{
+  "name":"Copper",
+  "value":4,
+  "complexity":2,
+  "attributes":[
+     "ductile",
+     "conductive"
+  ],
+  "rarity":"common",
+  "spawnLocations":[
+     "mountain",
+     "grassland"
+  ]
+},
+"tin":{
+  "name":"Tin",
+  "value":3,
+  "complexity":1,
+  "attributes":[
+     "malleable"
+  ],
+  "rarity":"common",
+  "spawnLocations":[
+     "mountain",
+     "grassland"
+  ]
+},
+"obsidian":{
+  "name":"Obsidian",
+  "value":6,
+  "complexity":3,
+  "attributes":[
+     "sharp",
+     "glassy"
+  ],
+  "rarity":"uncommon",
+  "spawnLocations":[
+     "mountain",
+     "desert"
+  ]
+}
   // ... other resources ...
 };
 
 
-export const items = {
-  'Stone axe': {
-      resources: {
-          wood: 1,
-          stone: 2
-      },
-      type: "tool",
-      value: 5,
-      complexity: 3,
-      productionSpeed: 10000,  // assuming it takes 1000ms (1 second) to produce
-      attributes: ["blunt", "durable"],
-      enhancements: {
-          type: "lumberyard",
-          productivityIncrease: 0.1,  // 10% increase in productivity
-          consumed: false              // not consumed during production
-      }
-  },
-  'Wooden spear': {
-      resources: {
-          wood: 3
-      },
-      type: "weapon",
-      value: 4,
-      complexity: 2,
-      productionSpeed: 8000,  // assuming it takes 800ms to produce
-      attributes: ["pointy"],
-      enhancements: {
-          type: "hunting lodge",   // assuming spears enhance a hunting lodge
-          productivityIncrease: 0.15,  // 15% increase in productivity
-          consumed: true                // consumed during production/hunting
-      }
-  },
-  'Cart': {
-    resources: {
-        wood: 4,
-        iron: 2,
-        wheels: 4, // Assuming you need wheels
+export let utilityItems = {
+  "stone_axe":{
+    "name":"Stone Axe",
+    "resources":{
+       "wood":1,
+       "stone":2
     },
-    type: "vehicle", // Categorized as a vehicle
-    value: 12, // Value in your game's currency
-    complexity: 6, // Represents the complexity of making a cart
-    capacity: 500, // The maximum load capacity of the cart in kilograms or your game's equivalent
-    attributes: ["durable", "transport"],
-    enhancements: {
-        type: "reinforcement", // An enhancement related to vehicle reinforcement
-        durabilityIncrease: 0.2, // 20% increase in durability
-        speedIncrease: 0.1, // 10% increase in movement speed when pulled
-        consumed: false // Not consumed during production
+    "type":"tool",
+    "value":5,
+    "complexity":3,
+    "productionSpeed":10000,
+    "attributes":[
+       "blunt",
+       "durable"
+    ],
+    "requirements":[     
+    ],
+    "enhancements":{
+       "type":[
+          "extraction"
+       ],
+       "productivityIncrease":0.1,
+       "consumed":"false"
     }
-},
-  // ... other item definitions ...
+ },
+  'ironbar': {
+    'name': "Iron Bar",
+    'resources': {
+      'ironOre': 2, 
+      'coal': 1,
+    },
+    'type': "material",
+    'value': 14,
+    'complexity': 3,
+    'productionSpeed': 8000,
+    'attributes': [],
+    'requirements': ['smelting'],
+    'enhancements': {
+      'type': [],
+      'productivityIncrease': 0,
+      'consumed': true
+    },
+  },
+  'wrench': {
+    'name': "Wrench",
+    'resources': {
+      'wood': 2,
+      'iron': 3
+    },
+    'type': 'tool',
+    'value': 5,
+    'complexity': 2,
+    'productionSpeed': 8000,
+    'attributes': ['adjustable', 'grip'],
+    'requirements': ['Workbench'],
+    'enhancements': {
+      'type': ['repair', 'construction'],
+      'productivityIncrease': 0.15,
+      'consumed': true
+    }
+  },
+  'hammer': { 
+    'name': "Hammer",
+    'resources': { 
+      'wood': 2, 
+      'iron': 1 
+    }, 
+    'type': 'tool', 
+    'value': 2, 
+    'attributes': ['hammering'], 
+    'requirements': [], 
+    'enhancements': { 
+      'type': ['production'], 
+      'productivityIncrease': 0.1, 
+      'consumed': false } 
+    },
+  'furnace': {
+    'name': "Furnace",
+    'resources': {
+      'stone': 10,
+      'wood': 5
+    },
+    'type': "machine",
+    'value': 15,
+    'complexity': 5,
+    'productionSpeed': 15000,
+    'attributes': ["smelting"],
+    'enhancements': {
+      'type': ["workshop", "production"],
+      'productivityIncrease': 0.15,
+      'consumed': true
+    },
+  },
+  'wooden_spear': {
+    'name': "Wooden Spear",
+    'resources': {
+      'wood': 3
+    },
+    'type': "weapon",
+    'value': 4,
+    'complexity': 2,
+    'productionSpeed': 8000,
+    'attributes': ["pointy"],
+    'requirements': [],
+    'enhancements': {
+      'type': ["extraction",],
+      'productivityIncrease': 0.15,
+      'consumed': true
+    }
+  },
+
+}
+
+export const objectStructure = {
+  'hammer': { 
+    'name': "Hammer",
+    'resources': { 
+      'wood': 2, 
+      'iron': 1 
+    }, 
+    'type': 'tool', 
+    'value': 2, 
+    'attributes': ['hammering'], 
+    'requirements': [], 
+    'enhancements': { 
+      'type': ['production'], 
+      'productivityIncrease': 0.1, 
+      'consumed': false } 
+    },
+}
+
+export const updateUtilityItems = (newItems) => {
+  console.log("Utilites!")
+  console.log(newItems)
+  utilityItems = newItems;
 };

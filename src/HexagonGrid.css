@@ -1,0 +1,13 @@
+.hexagon-grid {
+    position: relative;
+    width: max-content;
+}
+
+.hexagon {
+    position: absolute;
+    width: 50px; /* Width of the hexagon */
+    height: 86.6px; /* Height of the hexagon calculated using √3 times the width */
+    background-color: #ccc;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+}

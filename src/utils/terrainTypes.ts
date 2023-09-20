@@ -1,7 +1,7 @@
 export const terrainTypes = {
   forest: {
     description: "Dense woods with an abundance of flora.",
-    resourcesAvailable: ['wood', 'coal'],
+    resourcesAvailable: ['Wood', 'Coal'],
     cost: {
       resources: {
         curreny: 400,
@@ -10,7 +10,7 @@ export const terrainTypes = {
   },
   grassland: {
     description: "Open fields with tall grasses and few trees.",
-    resourcesAvailable: ['wood', 'stone', 'iron', 'silver', 'copper', 'tin'],
+    resourcesAvailable: ['Wood', 'Stone', 'Iron', 'Silver', 'Copper', 'Tin'],
     cost: {
       resources: {
         curreny: 400,
